@@ -260,6 +260,13 @@ def main():
         help="Path to the ground truth file (required)"
     )
 
+    parser.add_argument(
+    "-o", "--output",
+    type=str,
+    required=True,
+    help="Path to the output file (required)"
+    )
+
     args = parser.parse_args()
 
     # Read the predictions and ground truth
@@ -284,6 +291,9 @@ def main():
 
     # Combine the results
     results = pd.concat([macro_df, micro_df, stats_df], axis=1)
+    with open(args.output, "w", encoding="utf-8") as f:
+        f.write(results.to_string())
+        print(f"Results saved to {args.output}")
     print(results)
 
 
