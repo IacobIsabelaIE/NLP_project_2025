@@ -225,8 +225,7 @@ def prediction_statistics(scores_per_sr: List[Dict[str, float]]) -> dict:
     final_stats = {}
     for rel in stats:
         final_stats[rel] = {
-            "avg. #preds": stats[rel]["total_pred"] / stats[rel][
-                "num_sr_pairs"],
+            "avg. #preds": stats[rel]["total_pred"] / stats[rel]["num_sr_pairs"],
             "#empty preds": stats[rel]["empty_pred"],
         }
 
