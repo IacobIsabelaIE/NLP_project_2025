@@ -19,7 +19,12 @@ class QwenLLM:
     def __init__(self, api_key: str, base_url: str = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"):
         self.client = OpenAI(api_key=api_key, base_url=base_url)
 
-    def chat(self, prompt: str, system_prompt: str = 'Given a question, your task is to provide the list of answers without any other context. If there are multiple answers, separate them with a comma. If there are no answers, type \"None\"') -> str | None:
+    def chat(self, prompt: str, system_prompt:  str = (
+    "You are a highly precise factual knowledge extractor. For every query, you will first reason internally "
+    "to ensure accuracy, and then provide only the requested factual entity. "
+    "If there are multiple answers, separate them with a comma. "
+    "If there are no answers to the question, provide an empty string. Don't write anything else. Just answer with thr string '[]'"
+    "If you don't know the answer, or if the entity doesn't exist, just say 'I don't know'")) -> str | None:
         response = self.client.chat.completions.create(
             model="qwen3-8b",
             messages=[
@@ -28,7 +33,7 @@ class QwenLLM:
             ],
             extra_body={"enable_thinking": False},
             max_tokens=256,
-            # temperature=0,
+            temperature=0,
             # top_p=0.1,
             # logprobs=True
         )
@@ -78,12 +83,23 @@ class QwenLLM:
         results = []
         for inp, output in tqdm(zip(inputs, outputs)):
             LOGGER.info(f"Input: {inp}, Output: {output}")
+            
+            # Handle specific relation types
             if inp["Relation"] in ["hasArea", "hasCapacity"]:
+                # For numerical answers (e.g., area, capacity), keep as single string
                 object_entities = output
                 wikidata_ids = output
             else:
-                object_entities = output.split(", ")
-                wikidata_ids = self.get_wikidata_idq(output)
+                # For other relations, process the output
+                if output.strip() == "None":
+                    object_entities = []
+                    wikidata_ids = ""
+                else:
+                    # Split into list of entities
+                    object_entities = output.split(", ")
+                    # Get Wikidata IDs for each entity
+                    wikidata_ids = self.get_wikidata_idq(output)
+            
             results.append({
                 "SubjectEntityID": inp["SubjectEntityID"],
                 "SubjectEntity": inp["SubjectEntity"],
@@ -93,4 +109,5 @@ class QwenLLM:
             })
 
         return results
+
 

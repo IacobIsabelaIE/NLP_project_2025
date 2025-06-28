@@ -1,0 +1,8 @@
+                              macro-p  macro-r  macro-f1  micro-p  micro-r  micro-f1  avg. #preds  #empty preds
+awardWonBy                      0.000    0.000     0.000    0.000    0.000     0.000        1.000             0
+companyTradesAtStockExchange    0.150    0.488     0.142    0.149    0.190     0.167        1.010             0
+countryLandBordersCountry       0.512    0.879     0.553    0.638    0.827     0.720        3.412             0
+hasArea                         0.000    0.000     0.000    0.000    0.000     0.000        4.120             0
+hasCapacity                     0.070    0.000     0.000    0.000    0.000     0.000        2.850             7
+personHasCityOfDeath            0.060    0.510     0.060    0.060    0.107     0.077        1.000             0
+*** All Relations ***           0.131    0.334     0.121    0.148    0.084     0.108        2.385             7
