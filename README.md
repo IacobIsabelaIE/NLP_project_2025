@@ -17,7 +17,7 @@ _few_shot_branch_ branch contains the few-shot prompts experiments
 
 This branch contains experiments and evaluations related to the **few-shot prompting** technique.
 
-##🧪 Evaluation Instructions
+🧪 Evaluation Instructions
 
 To evaluate your model predictions against the ground truth, use the `evaluate.py` script with the following command:
 
